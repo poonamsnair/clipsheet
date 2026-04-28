@@ -1,0 +1,1 @@
+../../../skills/clipsheet/SKILL.md

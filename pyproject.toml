@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clipsheet"
+version = "0.1.4"
+description = "CPU-only video → grid summarizer for vision LLMs (Claude Code, Gemini CLI, Codex, Cursor)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Poonam Nair" },
+]
+keywords = [
+    "video", "ffmpeg", "llm", "vision", "claude", "gemini", "codex", "cursor",
+    "screen-recording", "agent", "ui-debugging",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+dependencies = [
+    "Pillow>=10.0.0",
+    # imageio-ffmpeg is included by default so `pip install clipsheet`
+    # works with no manual ffmpeg setup. We still prefer the system binary
+    # if present (see ensure_ffmpeg in sample.py); imageio-ffmpeg is the
+    # safety net.
+    "imageio-ffmpeg>=0.5.0",
+]
+
+[project.optional-dependencies]
+# Kept for users who want to install without the ~30MB bundled ffmpeg
+# binary, e.g. server environments where ffmpeg is already on PATH.
+# Install via: pip install clipsheet --no-deps && pip install Pillow
+# or use: uv pip install --extra system clipsheet
+system = []
+
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1.0",
+    "build>=1.0",
+    "twine>=4.0",
+]
+
+[project.scripts]
+clipsheet = "clipsheet.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/poonamsnair/clipsheet"
+Repository = "https://github.com/poonamsnair/clipsheet"
+Issues = "https://github.com/poonamsnair/clipsheet/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+# Ship the SKILL.md inside the wheel so `clipsheet init` can copy it into
+# the user's coding-agent skill directory without a network round-trip.
+[tool.setuptools.package-data]
+clipsheet = ["_skill/SKILL.md"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
