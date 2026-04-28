@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="examples/social-card.png" alt="clipsheet logo" width="200">
+  <img src="examples/logo.png" alt="clipsheet logo" width="200">
 </p>
 
 # clipsheet
