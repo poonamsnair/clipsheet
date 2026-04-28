@@ -1,0 +1,29 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Sample videos and outputs (too large for git)
+samples/*.mp4
+samples/*.mov
+samples/*.webm
+samples/*.mkv
+samples/*.avi
+samples/*.MP4
+samples/output/
+samples/*_clips/
+
+# Generated outputs
+examples/*_clips/

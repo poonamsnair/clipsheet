@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="520" viewBox="0 0 820 520">
+  <defs>
+    <style>
+      text, tspan { font-family: 'SFMono-Regular', 'SF Mono', 'Menlo', 'Consolas', 'Liberation Mono', monospace; }
+    </style>
+  </defs>
+
+  <!-- Terminal background -->
+  <rect width="820" height="520" rx="10" ry="10" fill="#0d0d0d" />
+
+  <!-- Title bar -->
+  <rect width="820" height="36" rx="10" ry="10" fill="#1a1a1a" />
+  <rect width="820" height="10" y="26" fill="#1a1a1a" />
+
+  <!-- Window dots -->
+  <circle cx="20" cy="18" r="6" fill="#ff5f57" />
+  <circle cx="40" cy="18" r="6" fill="#febc2e" />
+  <circle cx="60" cy="18" r="6" fill="#28c840" />
+
+  <!-- Title bar text -->
+  <text x="410" y="22" text-anchor="middle" fill="#666" font-size="12">clipsheet analysis — demo.mp4</text>
+
+  <!-- Content area -->
+  <g transform="translate(20, 56)">
+    <!-- Header -->
+    <text y="0" fill="#f59e0b" font-size="13" font-weight="700">&#x25CF; Errors found in demo.mp4</text>
+
+    <!-- Error 1 -->
+    <text y="34">
+      <tspan fill="#f97316" font-size="13" font-weight="700">1. </tspan>
+      <tspan fill="#e5e5e5" font-size="13" font-weight="700">Vertex AI quota error (the main failure)</tspan>
+    </text>
+    <text y="54" fill="#999" font-size="12">
+      <tspan fill="#f59e0b">grid 1, C1 (0:14.0)</tspan>
+      <tspan fill="#777"> &#x2192; persists through </tspan>
+      <tspan fill="#f59e0b">grid 2, B3 (0:20.0)</tspan>
+    </text>
+    <text y="72" fill="#fb923c" font-size="12" font-style="italic">"error":{"code":429,"message":"Resource exhausted"}</text>
+    <text y="90" fill="#666" font-size="12">HTTP 429 / RESOURCE_EXHAUSTED — quota or rate limit hit. Agent never recovers.</text>
+
+    <!-- Error 2 -->
+    <text y="122">
+      <tspan fill="#f97316" font-size="13" font-weight="700">2. </tspan>
+      <tspan fill="#e5e5e5" font-size="13" font-weight="700">Misleading recovery prompt</tspan>
+    </text>
+    <text y="142" fill="#999" font-size="12">Error says "describe what you want to extract in more detail?" but root</text>
+    <text y="158" fill="#999" font-size="12">cause is a quota limit, not user-input ambiguity. Should detect 429 and retry.</text>
+
+    <!-- Error 3 -->
+    <text y="190">
+      <tspan fill="#f97316" font-size="13" font-weight="700">3. </tspan>
+      <tspan fill="#e5e5e5" font-size="13" font-weight="700">Raw JSON / stack-trace leaked to UI</tspan>
+      <tspan fill="#555"> — </tspan>
+      <tspan fill="#f59e0b">grid 1, C1–C3</tspan>
+    </text>
+    <text y="210" fill="#999" font-size="12">The 429 payload ({"error":{"code":429,...}}) should never reach the end user.</text>
+    <text y="226" fill="#999" font-size="12">Wrap upstream errors and present a clean, human-readable message.</text>
+
+    <!-- Error 4 -->
+    <text y="258">
+      <tspan fill="#f97316" font-size="13" font-weight="700">4. </tspan>
+      <tspan fill="#e5e5e5" font-size="13" font-weight="700">Possible intent mismatch</tspan>
+      <tspan fill="#555" font-size="12"> (lower confidence)</tspan>
+    </text>
+    <text y="278" fill="#999" font-size="12">
+      <tspan fill="#f59e0b">grid 1, A1–A2 (0:00–0:08)</tspan>
+      <tspan fill="#999">: user asked "extract all YC W24 batch</tspan>
+    </text>
+    <text y="294" fill="#999" font-size="12">companies" but agent fell back to a generic "top websites" template.</text>
+
+    <!-- Divider -->
+    <line x1="0" y1="320" x2="780" y2="320" stroke="#333" stroke-width="1" />
+
+    <!-- Summary -->
+    <text y="346" fill="#f97316" font-size="13" font-weight="700">Summary</text>
+    <text y="368" fill="#999" font-size="12">Single failed agent run: starts on YC-W24 extraction, drifts to a generic</text>
+    <text y="384" fill="#999" font-size="12">"top websites" clarifier, then hard-fails with a leaked Vertex AI 429.</text>
+    <text y="408">
+      <tspan fill="#f59e0b" font-size="12" font-weight="700">Fix:</tspan>
+      <tspan fill="#999" font-size="12"> (a) handle/retry 429s, (b) sanitize error payloads, (c) check routing.</tspan>
+    </text>
+
+    <!-- Footer -->
+    <text y="444" fill="#444" font-size="11">&#x2731; Worked for 47s  ·  claude-opus-4-7  ·  2 grids analyzed</text>
+  </g>
+</svg>
